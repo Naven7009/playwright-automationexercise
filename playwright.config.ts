@@ -1,0 +1,27 @@
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests',
+  fullyParallel: true,
+  retries: 2,
+  workers: 1,
+  reporter: 'html',
+
+  use: {
+    trace: 'on-first-retry',
+    headless: false,
+    viewport: null, // Ensures the browser starts with the default screen size
+  },
+
+  projects: [
+    {
+      name: 'chromium',
+      use: {
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          args: ['--start-fullscreen'], // Opens browser in fullscreen mode
+        },
+      },
+    },
+  ],
+});
