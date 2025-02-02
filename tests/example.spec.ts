@@ -1,43 +1,54 @@
 import { test, expect } from '@playwright/test';
+import { AutomationTest } from '../Methods/Reusable';
 
 test('Automation Exercise Signup/Login', async ({ page }) => {
-    await page.goto('https://www.automationexercise.com/');
-    await page.locator("text=Signup / Login").click();
-    await page.locator("[data-qa='signup-name']").fill("automationexercise");
-    await page.locator("[data-qa='signup-email']").fill("automationexecrice6@gmail.com");
-    await page.locator("[data-qa='signup-button']").click();
-    
-    // Check if email already exists
-    const emailText = await page.locator("//p[contains(text(),'Email Address')]").first();
-    if (await emailText.isVisible()) {
-        console.log("New user......");
-    } else {
-        await page.locator("#id_gender1").check();
-        await page.locator("#password").fill("password");
-        await page.locator("#days").selectOption("19");
-        await page.locator("#months").selectOption("June");
-        await page.locator("#years").selectOption("1997");
-        await page.locator("#newsletter").check();
-        await page.locator("#optin").check();
-        
-        await page.locator("#first_name").fill("Naven");
-        await page.locator("#last_name").fill("Raj");
-        await page.locator("#company").fill("google");
-        await page.locator("#address1").fill("perungudi");
-        await page.locator("#address2").fill("chennai");
-        await page.locator("#country").selectOption("Israel");
-        await page.locator("#state").fill("Tamilnadu");
-        await page.locator("#city").fill("Chennai");
-        await page.locator("#zipcode").fill("600001");
-        await page.locator("#mobile_number").fill("9789789774");
-        
-        await page.locator("[data-qa='create-account']").click();
+  const test = new AutomationTest(page);
+  const locators = test.locators;
+  await test.loadUrl('https://www.automationexercise.com');
+  
+  await test.click(locators.signupTab);
+  await test.enterText(locators.signupName, 'automationexercise');
+  await test.wait(1000);
+  await test.enterText(locators.signupEmail, 'automationexercise8@gmail.com');
+  await test.click(locators.signupButton);
 
-        // Verify account creation
-        const accountCreated = await page.locator("[data-qa='account-created']");
-        await expect(accountCreated).toBeVisible();
-        console.log(await accountCreated.textContent());
-        
-        await page.locator("[data-qa='continue-button']").click();
+  try {
+    //const emailElement = test.locators(locators.emailText); // Get the locator
+    const emailExists = await test.isVisible(locators.emailText); // Check if visible
+
+    if (emailExists) {
+      const emailText = await test.getText(locators.emailText);
+      console.log(emailText);
+    } else {
+      throw new Error("Email element not found");
     }
+  } catch (error) {
+    console.log('New user detected. Proceeding with signup...');
+    await test.click(locators.gender);
+    await test.enterText(locators.password, 'password');
+
+    await test.selectDropdown(locators.days, '19');
+    await test.selectDropdown(locators.months, 'June');
+    await test.selectDropdown(locators.years, '1997');
+
+    await test.click(locators.newsletter);
+    await test.click(locators.option);
+
+    await test.enterText(locators.firstName, 'Naven');
+    await test.enterText(locators.lastName, 'Raj');
+    await test.enterText(locators.company, 'google');
+    await test.enterText(locators.addressLine1, 'Perungudi');
+    await test.enterText(locators.addressLine2, 'Chennai');
+
+    await test.selectDropdown(locators.country, 'Israel');
+    await test.enterText(locators.state, 'Tamilnadu');
+    await test.enterText(locators.city, 'Chennai');
+    await test.enterText(locators.zipcode, '600001');
+    await test.enterText(locators.mobileNumber, '9789789774');
+    await test.click(locators.createAccount);
+
+    const accountText = await test.getText(locators.accountCreated);
+    console.log(accountText);
+    await test.click(locators.continueButton);
+  }
 });
