@@ -8,7 +8,7 @@ export default defineConfig({
   //reporter: 'html',
 
   use: {
-    trace: 'on-first-retry',
+    trace: 'on',
     headless: false,
     viewport: null, // Ensures the browser starts with the default screen size
   },
