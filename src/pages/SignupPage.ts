@@ -32,6 +32,8 @@ export class SignupPage {
       createAccount: "//button[@data-qa='create-account']",
       accountCreated: "//h2[@data-qa='account-created']",
       continueButton: "//a[@data-qa='continue-button']",
+
+      logouttab: "//a[contains(text(),'Logout')]"
     };
 
   async navigateToSignup() {
@@ -73,5 +75,6 @@ export class SignupPage {
     const accountText = await this.page.locator(this.locators.accountCreated).textContent();
     console.log(`Account Created Message: ${accountText}`);
     await this.page.click(this.locators.continueButton);
+    await this.page.click(this.locators.logouttab);
   }
 }
