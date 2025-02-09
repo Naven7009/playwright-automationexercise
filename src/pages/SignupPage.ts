@@ -1,80 +1,97 @@
-export class SignupPage {
-  constructor(private _page) {}
-//either private constructror and get method or public constructor.
-//Good to use encapsulation- for better usage
-  get page() {
-    return this._page;
-  }
+import { BasePage } from './BasePage';
+import { expect } from '@playwright/test'; // Import the Playwright's assertion module
 
-    locators = {
-      signupTab: "//a[contains(text(),'Signup / Login')]",
-      signupName: "//input[@data-qa='signup-name']",
-      signupEmail: "//input[@data-qa='signup-email']",
-      signupButton: "//button[@data-qa='signup-button']",
-      emailText: "//p[contains(text(),'Email Address')]",
-      gender: "#id_gender1",
-      password: "#password",
-      days: "//select[@id='days']",
-      months: "//select[@id='months']",
-      years: "//select[@id='years']",
-      newsletter: "#newsletter",
-      option: "#optin",
-      firstName: "#first_name",
-      lastName: "#last_name",
-      company: "#company",
-      addressLine1: "#address1",
-      addressLine2: "#address2",
-      country: "//select[@id='country']",
-      state: "#state",
-      city: "#city",
-      zipcode: "#zipcode",
-      mobileNumber: "#mobile_number",
-      createAccount: "//button[@data-qa='create-account']",
-      accountCreated: "//h2[@data-qa='account-created']",
-      continueButton: "//a[@data-qa='continue-button']",
+export class SignupPage extends BasePage {
+    constructor(page) {
+        super(page);
+    }
 
-      logouttab: "//a[contains(text(),'Logout')]"
-    };
+    // Public locators (or getter methods)
+    public signupTab = "//a[contains(text(),'Signup / Login')]";
+    public signupName = "//input[@data-qa='signup-name']";
+    public signupEmail = "//input[@data-qa='signup-email']";
+    public signupButton = "//button[@data-qa='signup-button']";
+    public emailError = "//p[.='Email Address already exist!']";
+    public genderRadio = "#id_gender1";
+    public passwordField = "#password";
+    public daysDropdown = "//select[@id='days']";
+    public monthsDropdown = "//select[@id='months']";
+    public yearsDropdown = "//select[@id='years']";
+    public newsletterCheckbox = "#newsletter";
+    public optionCheckbox = "#optin";
+    public firstNameField = "#first_name";
+    public lastNameField = "#last_name";
+    public companyField = "#company";
+    public address1Field = "#address1";
+    public address2Field = "#address2";
+    public countryDropdown = "//select[@id='country']";
+    public stateField = "#state";
+    public cityField = "#city";
+    public zipcodeField = "#zipcode";
+    public mobileField = "#mobile_number";
+    public createAccountButton = "//button[@data-qa='create-account']";
+    public accountCreatedMessage = "//h2[@data-qa='account-created']";
+    public continueButton = "//a[@data-qa='continue-button']";
+    public logoutLink = "//a[contains(text(),'Logout')]";
 
-  async navigateToSignup() {
-    await this.page.click(this.locators.signupTab);
-  }
+    // Methods to interact with locators
+    async navigateToSignup() {
+        await this.click(this.signupTab);
+    }
 
-  async fillSignupForm(name: string, email: string) {
-    await this.page.fill(this.locators.signupName, name);
-    await this.page.fill(this.locators.signupEmail, email);
-    await this.page.click(this.locators.signupButton);
-  }
+    async fillSignupForm(name: string, email: string) {
+        await this.fill(this.signupName, name);
+        await this.fill(this.signupEmail, email);
+        await this.click(this.signupButton);
 
-  async fillSignupDetails() {
-    await this.page.click(this.locators.gender);
-    await this.page.fill(this.locators.password, 'password');
-  
-    await this.page.selectOption(this.locators.days, '19');
-    await this.page.selectOption(this.locators.months, 'June');
-    await this.page.selectOption(this.locators.years, '1997');
-  
-    await this.page.click(this.locators.newsletter);
-    await this.page.click(this.locators.option);
-  
-    await this.page.fill(this.locators.firstName, 'Naven');
-    await this.page.fill(this.locators.lastName, 'Raj');
-    await this.page.fill(this.locators.company, 'Google');
-    await this.page.fill(this.locators.addressLine1, 'Perungudi');
-    await this.page.fill(this.locators.addressLine2, 'Chennai');
-  
-    await this.page.selectOption(this.locators.country, 'Israel');
-    await this.page.fill(this.locators.state, 'Tamil Nadu');
-    await this.page.fill(this.locators.city, 'Chennai');
-    await this.page.fill(this.locators.zipcode, '600001');
-    await this.page.fill(this.locators.mobileNumber, '9789789774');
-  }
+        // Assertion to check if the email is already registered (if exists)
+        const emailError = await this.page.locator(this.emailError).textContent();
+        console.log(emailError);
+        
+        if (emailError.includes("Email already exist")) {
+            throw new Error('Email already exists. Cannot proceed with signup');
+        }
+    }
 
-  async createAccount() {
-    await this.page.click(this.locators.createAccount);
-    const accountText = await this.page.locator(this.locators.accountCreated).textContent();
-    console.log(`Account Created Message: ${accountText}`);
-    await this.page.click(this.locators.continueButton);
-    await this.page.click(this.locators.logouttab);
-  }
+    async fillSignupDetails() {
+        await this.click(this.genderRadio);
+        await this.fill(this.passwordField, "password");
+
+        await this.selectOption(this.daysDropdown, "19");
+        await this.selectOption(this.monthsDropdown, "June");
+        await this.selectOption(this.yearsDropdown, "1997");
+
+        await this.click(this.newsletterCheckbox);
+        await this.click(this.optionCheckbox);
+
+        await this.fill(this.firstNameField, "Naven");
+        await this.fill(this.lastNameField, "Raj");
+        await this.fill(this.companyField, "Google");
+        await this.fill(this.address1Field, "Perungudi");
+        await this.fill(this.address2Field, "Chennai");
+
+        await this.selectOption(this.countryDropdown, "Israel");
+        await this.fill(this.stateField, "Tamil Nadu");
+        await this.fill(this.cityField, "Chennai");
+        await this.fill(this.zipcodeField, "600001");
+        await this.fill(this.mobileField, "9789789774");
+    }
+
+    async createAccount() {
+        await this.click(this.createAccountButton);
+
+        // Assertion to check account creation message
+        const accountText = await this.getText(this.accountCreatedMessage);
+        expect(accountText).toBeTruthy(); // Ensures account creation message exists
+
+        console.log(`Account Created Message: ${accountText}`);
+
+        await this.click(this.continueButton);
+
+        // Assertion to check if logout link is visible after account creation
+        const logoutLinkVisible = await this.page.locator(this.logoutLink).isVisible();
+        expect(logoutLinkVisible).toBe(true);
+
+        await this.click(this.logoutLink);
+    }
 }

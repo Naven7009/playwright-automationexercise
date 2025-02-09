@@ -1,11 +1,15 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
+  grep: /@regression/,
   testDir: './src/tests',
   fullyParallel: true,
   retries: 0,
-  workers: 1,
-  //reporter: 'html',
+  workers: 4,
+  reporter: [
+    ['list'], 
+    ['allure-playwright']
+  ],
 
   use: {
     trace: 'on',
@@ -21,6 +25,7 @@ export default defineConfig({
         launchOptions: {
           args: ['--start-fullscreen'], // Opens browser in fullscreen mode
         },
+        
       },
     },
   ],

@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","18623","View Product Details","chromium","Sun Feb 09 08:45:52 IST 2025","passed","Sun Feb 09 08:46:11 IST 2025","Product Page Testing","productpage.spec.ts","",""
+"","20634","Login Test","chromium","Sun Feb 09 08:45:52 IST 2025","passed","Sun Feb 09 08:46:13 IST 2025","Signup Page Testing","signuppage.spec.ts","",""
+"","19934","Signup Test","chromium","Sun Feb 09 08:45:52 IST 2025","passed","Sun Feb 09 08:46:12 IST 2025","Signup Page Testing","signuppage.spec.ts","",""
+"","20330","View Products","chromium","Sun Feb 09 08:45:52 IST 2025","passed","Sun Feb 09 08:46:12 IST 2025","Product Page Testing","productpage.spec.ts","",""
