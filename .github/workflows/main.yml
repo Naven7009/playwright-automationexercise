@@ -2,7 +2,7 @@ name: Run Playwright Tests with Allure Report
 
 on:
   schedule:
-    - cron: "0 19 * * *"  # Runs daily at 6:30 PM UTC
+    - cron: "30 19 * * *"  # Runs daily at 6:30 PM UTC
   workflow_dispatch:
 
 jobs:
