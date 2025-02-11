@@ -13,7 +13,7 @@ export default defineConfig({
 
   use: {
     trace: 'on',
-    headless: false,
+    headless: true,
     viewport: null, // Ensures the browser starts with the default screen size
   },
 
