@@ -5,7 +5,7 @@ export default defineConfig({
   testDir: './src/tests',
   fullyParallel: true,
   retries: 0,
-  workers: 4,
+  workers: 1,
   reporter: [
     ['list'], 
     ['allure-playwright']
