@@ -2,7 +2,7 @@ name: Run Playwright Tests
 
 on:
   schedule:
-    - cron: "0 23 * * *"  # Runs daily at 11:00 PM UTC
+    - cron: "30 17 * * *"  # Runs daily at 11:00 PM IST
   workflow_dispatch:  # Allows manual trigger
 
 jobs:
@@ -24,18 +24,24 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      # Inject environment variables from GitHub Secrets
+      # ✅ **Delete Old Playwright Report**
+      - name: Remove Previous Reports
+        run: rm -rf playwright-report/ test-results/
+
+      # ✅ **Set Environment Variables (Secrets)**
       - name: Set Environment Variables
         run: |
           echo "EMAIL=${{ secrets.EMAIL }}" >> $GITHUB_ENV
           echo "PASSWORD=${{ secrets.PASSWORD }}" >> $GITHUB_ENV
 
+      # ✅ **Run Playwright Tests**
       - name: Run Tests in Headless Mode
-        run: npx playwright test  
+        run: npx playwright test
         env:
           EMAIL: ${{ secrets.EMAIL }}
           PASSWORD: ${{ secrets.PASSWORD }}
 
+      # ✅ **Upload Latest Playwright Report**
       - name: Upload Playwright Report
         if: always()
         uses: actions/upload-artifact@v4
