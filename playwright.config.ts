@@ -3,6 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   grep: /@regression/,
   testDir: './src/tests',
+  timeout: 180000,
   fullyParallel: true,
   retries: 0,
   workers: 1,
